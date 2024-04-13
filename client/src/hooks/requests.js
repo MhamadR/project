@@ -31,7 +31,7 @@ async function httpSubmitLaunch(launch) {
 
 async function httpAbortLaunch(id) {
   try {
-    await fetch(`${API_URL}/launches/${id}`, {
+    return await fetch(`${API_URL}/launches/${id}`, {
       method: "delete",
     });
   } catch (err) {
