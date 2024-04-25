@@ -1,5 +1,4 @@
 const request = require("supertest");
-
 const app = require("../../app");
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo");
 const { loadPlanetsData } = require("../../models/planets.model");
@@ -23,7 +22,7 @@ describe("Launches API", () => {
     });
   });
 
-  describe("Test POST /launches", () => {
+  describe("Test POST /launch", () => {
     const completeLaunchData = {
       mission: "Exo Planets Exploration II",
       rocket: "NCC 1701-D",
@@ -69,6 +68,7 @@ describe("Launches API", () => {
         error: "Missing required launch property",
       });
     });
+
     test("It should catch invalid dates", async () => {
       const response = await request(app)
         .post("/v1/launches")
