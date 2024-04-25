@@ -1,4 +1,4 @@
-name: Nasa Project CI
+name: Project CI
 on:
   push:
     branches: [master]
