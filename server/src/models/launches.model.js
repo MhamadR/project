@@ -42,13 +42,15 @@ async function populateLaunches() {
       return payload["customers"];
     });
 
+    const launchDate = new Date(launchDoc["date_local"]);
+
     const launch = {
       flightNumber: launchDoc["flight_number"],
       mission: launchDoc["name"],
       rocket: launchDoc["rocket"]["name"],
-      launchDate: launchDoc["date_local"],
-      upcoming: launchDoc["upcoming"],
-      success: launchDoc["success"],
+      launchDate,
+      upcoming: launchDate < new Date() ? false : launchDoc["upcoming"],
+      success: launchDoc["success"] ?? false,
       customers,
     };
 
@@ -56,6 +58,13 @@ async function populateLaunches() {
 
     await saveLaunch(launch);
   }
+}
+
+async function findLaunch(filter) {
+  return await launches.findOne(filter, {
+    _id: 0,
+    __v: 0,
+  });
 }
 
 async function loadLaunchData() {
@@ -69,10 +78,6 @@ async function loadLaunchData() {
   } else {
     await populateLaunches();
   }
-}
-
-async function findLaunch(filter) {
-  return await launches.findOne(filter);
 }
 
 async function existsLaunchWithId(launchId) {
@@ -153,8 +158,8 @@ async function abortLaunchById(launchId) {
 
 module.exports = {
   loadLaunchData,
+  findLaunch,
   existsLaunchWithId,
-  launches,
   getAllLaunches,
   scheduleNewLaunch,
   abortLaunchById,
