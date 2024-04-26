@@ -1,5 +1,6 @@
 const {
   getAllLaunches,
+  findLaunch,
   scheduleNewLaunch,
   existsLaunchWithId,
   abortLaunchById,
@@ -32,6 +33,15 @@ async function httpAddNewLaunch(req, res) {
     return res.status(400).json({
       error: "Invalid launch date",
     });
+  }
+
+  const launchExists = await findLaunch({
+    ...launch,
+    upcoming: true,
+    success: true,
+  });
+  if (launchExists) {
+    return res.status(200).json({ launch, message: "No changes required" });
   }
 
   await scheduleNewLaunch(launch);
