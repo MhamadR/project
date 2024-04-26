@@ -4,8 +4,6 @@ const path = require("path");
 
 const planets = require("./planets.mongo");
 
-const habitablePlanets = [];
-
 const isHabitablePlanet = (planet) => {
   return (
     planet["koi_disposition"] === "CONFIRMED" &&
